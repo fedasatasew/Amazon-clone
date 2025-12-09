@@ -2,7 +2,7 @@ import React from 'react'
 import { BsSearch } from "react-icons/bs";
 import { SlLocationPin } from "react-icons/sl";
 import { BiCart } from "react-icons/bi";
-
+import {Link} from 'react-router'
 
 import amazon_log from '../../assets/image/icons/amazon_logo.png'
 import american_flag from '../../assets/image/img/american_flag.jpg'
@@ -16,9 +16,9 @@ export default function Header() {
             {/* logo  */}
             <div className={classes.logo_container}>
                
-               <a href=" ">
+               <Link to="/">
                    <img src={amazon_log} alt="Amazon log" />
-               </a>
+               </Link>
                {/* delivery  */}
                <div className={classes.delivery}>
                     <span>
@@ -43,27 +43,27 @@ export default function Header() {
             </div>
 
             <div className={classes.order_container}>
-                <a href="#" className={classes.language}>
+                <Link to="#" className={classes.language}>
                     <img src={american_flag} alt="" />
                     <select name="" id="">
                         <option value="">EN</option>
                     </select>
-                </a>
-                <a href="">
+                </Link>
+                <Link to="">
                     <div>
                         <p>Sign In</p>
                         <span>Account & Lists</span>
                     </div>
-                </a>
-                <a href="">
+                </Link>
+                <Link to="/orders">
                     <p>returns</p>
                     <span>& Orders</span>
-                </a>
+                </Link>
                 {/* icon  cart */}
-                <a href="" className={classes.cart}>
+                <Link to="/cart" className={classes.cart}>
                     <BiCart size={35}/>
                     <span>0</span>
-                </a>
+                </Link>
             </div>
         </section>
         <LowerHeader />
