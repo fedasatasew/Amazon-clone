@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { BsSearch } from "react-icons/bs";
 import { SlLocationPin } from "react-icons/sl";
 import { BiCart } from "react-icons/bi";
@@ -8,10 +8,18 @@ import amazon_log from '../../assets/image/icons/amazon_logo.png'
 import american_flag from '../../assets/image/img/american_flag.jpg'
 import classes from './Header.module.css'
 import LowerHeader from './LowerHeader';
+import { DataContext } from '../DataProvider/DataProvider';
+
 export default function Header() {
+
+const [{basket}, dispatch]=useContext(DataContext)
+const totalItem=basket?.reduce((amount,item)=>{
+    return item.amount+amount
+},0)
+
   return (
    
-      <>
+      <section className={classes.header_fixed}>
         <section className={classes.header_container}>
             {/* logo  */}
             <div className={classes.logo_container}>
@@ -62,12 +70,12 @@ export default function Header() {
                 {/* icon  cart */}
                 <Link to="/cart" className={classes.cart}>
                     <BiCart size={35}/>
-                    <span>0</span>
+                    <span>{totalItem}</span>
                 </Link>
             </div>
         </section>
         <LowerHeader />
-      </>
+      </section>
     
   )
 }

@@ -6,6 +6,8 @@ import Payment from './Pages/Payment/Payment'
 import Orders from './Pages/Orders/Orders'
 import Cart from './Pages/Cart/Cart'
 import Result from './Pages/Result/Result'
+import ProductDetail from './Pages/ProductDetail/ProductDetail'
+import Unknownpage from './Component/Unknownpage/Unknownpage'
 function Routing() {
   return (
     <Router>
@@ -15,7 +17,10 @@ function Routing() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/cart" element={<Cart />} /> 
-        <Route path="/category/:categoryName" element={<Result />} />          
+        <Route path="/category/:categoryName" element={<Result />} /> 
+        <Route path="/product/:productId" element={<ProductDetail />} />  
+        <Route path="*" element={<Unknownpage/> } />         
+
 
       </Routes>
     </Router>
