@@ -36,7 +36,7 @@
         height: 320px;
         width: 310px;
     }
-.category_container{
+      .category_container{
 
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -50,5 +50,15 @@
     .category_container{
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+@media screen and (min-width:1216px){
+    .category{
+        height: 380px;
+        width: 350px;
+    }
+      .category_container{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
     }
 }
