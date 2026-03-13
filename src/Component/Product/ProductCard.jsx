@@ -11,8 +11,6 @@ function ProductCard({Product, flex, renderdesc,renderAdd }) {
 
   const truncatedTitle = title?.length > 60 ? title.substring(0, 60) + '...' : title;
  const [state, dispatch]= useContext(DataContext)
-
-console.log(truncatedTitle)
 const addToCart=()=>{
   dispatch({
     type:Type.ADD_TO_BASKET,

@@ -9,10 +9,11 @@ import american_flag from '../../assets/image/img/american_flag.jpg'
 import classes from './Header.module.css'
 import LowerHeader from './LowerHeader';
 import { DataContext } from '../DataProvider/DataProvider';
+import { auth } from '../../Utility/firebase';
 
 export default function Header() {
 
-const [{basket}, dispatch]=useContext(DataContext)
+const [{basket, user}, dispatch]=useContext(DataContext)
 const totalItem=basket?.reduce((amount,item)=>{
     return item.amount+amount
 },0)
@@ -57,10 +58,24 @@ const totalItem=basket?.reduce((amount,item)=>{
                         <option value="">EN</option>
                     </select>
                 </Link>
-                <Link to="">
+                <Link to={!user && "/auth" }>
                     <div>
-                        <p>Sign In</p>
-                        <span>Account & Lists</span>
+                        {
+                            user ? (
+                                <>
+                                    <p>Hello, {user?.email?.split('@')[0]}</p>
+                                    <span onClick={()=>auth.signOut()}>SignOut</span>
+                                </>
+                            )
+                            :
+                             (
+                                <>
+                                   <p>Sign In</p>
+                                    <span>Account & Lists</span>
+                                </>
+                             
+                             )
+                        }
                     </div>
                 </Link>
                 <Link to="/orders">
