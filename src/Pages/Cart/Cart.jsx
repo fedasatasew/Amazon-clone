@@ -3,7 +3,7 @@ import LayOut from '../../Component/LayOut/LayOut'
 import { DataContext } from '../../Component/DataProvider/DataProvider'
 import ProductCard from '../../Component/Product/ProductCard'
 import CurrencyFormat from '../../Component/CurrencyFormat/CurrencyFormat'
-import {Link} from 'react-router'
+import { Link } from 'react-router-dom'
 import classes from './cart.module.css'
 import { Type } from '../../Utility/action.type'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
@@ -39,9 +39,10 @@ function Cart() {
               
               basket?.length==0?(<p>Opps! No item in your cart</p>):(
                 basket?.map((item, i)=>{
-                  return <section className={classes.cart_product}>
+                  return (
+                  <section key={i} className={classes.cart_product}>
                    <ProductCard 
-                    key={i}
+                    
                      Product={item}
                      renderdesc={true}
                      flex={true}
@@ -55,7 +56,9 @@ function Cart() {
                     <button onClick={()=>decrement(item.id)}><IoIosArrowDown  size={20}/></button>
                   </div>
                   </section>
+                )
                 })
+  
               )
              }
           </div>
