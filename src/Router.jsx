@@ -16,18 +16,29 @@ import Cart from './Pages/Cart/Cart'
 import Result from './Pages/Result/Result'
 import ProductDetail from './Pages/ProductDetail/ProductDetail'
 import Unknownpage from './Component/Unknownpage/Unknownpage'
+import ProtectedRoute from './Component/ProtectedRoute/ProtectedRoute'
+
 function Routing() {
   return (
     <Router>
       <Routes> 
         <Route path="/" element={<Landing />} />
         <Route path="/auth" element={<Auth />} />
-        <Route path="/payment" element={
-          <Elements stripe={stripePromise}>
-            <Payment />
-          </Elements>
-        } />
-        <Route path="/orders" element={<Orders />} />
+        <Route
+         path="/payment"
+          element={
+            <ProtectedRoute msg="You must be logged in to access the payment page" redirect="/payment">
+              <Elements stripe={stripePromise}>
+                <Payment />
+              </Elements>
+            </ProtectedRoute>
+          } />
+        <Route path="/orders" element={
+          <ProtectedRoute msg="You must be logged in to access the orders page" redirect="/orders">
+              <Elements stripe={stripePromise}>
+                <Orders />
+              </Elements>
+            </ProtectedRoute>} />
         <Route path="/cart" element={<Cart />} /> 
         <Route path="/category/:categoryName" element={<Result />} /> 
         <Route path="/product/:productId" element={<ProductDetail />} />  

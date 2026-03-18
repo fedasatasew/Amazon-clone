@@ -3,13 +3,19 @@ import LayOut from '../../Component/LayOut/LayOut'
 import classes from './payment.module.css'
 import { DataContext } from '../../Component/DataProvider/DataProvider'
 import ProductCard from '../../Component/Product/ProductCard'
-
+import {axiosInstance} from '../../Api/axios.js'
 import {useStripe, useElements,  CardElement} from '@stripe/react-stripe-js';
 import CurrencyFormat from '../../Component/CurrencyFormat/CurrencyFormat'
+import ClipLoader from "react-spinners/ClipLoader";
+import { db } from "../../Utility/firebase";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom'
+import {Type} from '../../Utility/action.type.js'
 
 function Payment() {
   const [carderror, setCardError] = useState(null);
-const [{basket}]=useContext(DataContext)
+  const [processing, setProcessing] = useState(false);
+const [{user, basket}, dispatch]=useContext(DataContext)
 
   const totalItem=basket?.reduce((amount,item)=>{
     return item.amount+amount
@@ -21,6 +27,7 @@ const [{basket}]=useContext(DataContext)
 
    const stripe = useStripe();
    const elements = useElements();
+   const navigate = useNavigate();
 
    const handleError=(event)=>{
       event?.error?.message? setCardError(event.error.message): setCardError(null);
@@ -28,6 +35,50 @@ const [{basket}]=useContext(DataContext)
       console.log(event.error.message);
   
   }
+
+  const paymentHandle = async (e) => {
+  e.preventDefault();
+
+  // if (!stripe || !elements) return; // ✅ important
+
+  try {
+    setProcessing(true);
+    const response = await axiosInstance({
+      method: "post",
+      url: `/payments/create?total=${total * 100}`,
+    });
+
+    const clientSecret = response.data?.clientSecret;
+
+      //2. Confirm the card payment with the client secret
+    const {paymentIntent} = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+      },
+    });
+
+
+const userOrdersRef = collection(db, "users", user.uid, "orders");
+    const orderDocRef = doc(userOrdersRef, paymentIntent.id);
+
+    await setDoc(orderDocRef, {
+      basket: basket,
+      amount: paymentIntent.amount,
+      created: paymentIntent.created,
+    });
+
+    // empty basket 
+
+    dispatch({type:Type.EMPTY_BASKET})
+
+     setProcessing(false);
+     navigate("/orders", { state: {msg: "Order placed successfully!"} });
+
+  } catch (error) {
+    console.error(error); // ❗ you were hiding errors
+    setProcessing(false);
+  }
+};
   return (
     <div>
       <LayOut>
@@ -67,7 +118,7 @@ const [{basket}]=useContext(DataContext)
             <h3>Payment Method</h3>
             <div  className={classes.payment_card_container}>
               <div className={classes.payment_details}>
-                <form action="">
+                <form onSubmit={paymentHandle}>
                   {carderror && <small style={{color:"red"}}>{carderror}</small>}
                   <CardElement onChange={handleError}/>
                   {/* price  */}
@@ -78,7 +129,17 @@ const [{basket}]=useContext(DataContext)
 
                       </span>
                     </div>
-                    <button>Pay Now</button>
+                    <button type="submit">
+                      {
+                        processing? (
+                          <div style={{display:"flex", alignItems:"center", gap:"10px"}}> 
+                            <ClipLoader color='gray' size={15} />
+                            <p>Processing...</p>
+                          </div>
+                        ): "Pay Now"
+                      }
+                      
+                      </button>
                   </div>
 
                 </form>

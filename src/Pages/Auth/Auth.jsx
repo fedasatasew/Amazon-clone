@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import LayOut from '../../Component/LayOut/LayOut'
 import classes from './Auth.module.css'
 import amazon_log from '../../assets/image/icons/image.png'
@@ -21,7 +21,8 @@ function Auth() {
     signUp:false
   })
   const navigate = useNavigate()  
-
+  const navStateData = useLocation()
+  console.log(navStateData)
   const [{user }, dispatch] = useContext(DataContext)
 
     console.log(user)
@@ -41,7 +42,7 @@ function Auth() {
 
      })
      setLoading({...loading, signIn:false})
-    navigate("/")
+    navigate(navStateData?.state?.redirect || "/")
     }
 
     if (name === "signup") {
@@ -54,7 +55,7 @@ function Auth() {
 
      })
      setLoading({...loading, signUp:false})
-    navigate("/")
+    navigate(navStateData?.state?.redirect || "/")
     }
 
   } catch (err) {
@@ -73,6 +74,11 @@ function Auth() {
    
     <div className={classes.loginContainer}>
       <h1>Sign In</h1>
+      {navStateData?.state?.msg && (
+        <small style={{color:'red', textAlign:'center',fontWeight:'bold', padding:'5px'}}>
+          {navStateData?.state?.msg}
+        </small>
+      )}
       <form action="">
         <div>
           <label htmlFor="email">email</label>

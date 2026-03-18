@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors({origin: true}));
 
 app.post("/payments/create", async (req, res) => {
-  const total = req.query.total;
+  const total =parseInt(req.query.total);
   logger.info("Payment Request Received for this amount >>> ", total);
   if(total > 0) {
        

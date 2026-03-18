@@ -25,40 +25,14 @@
     color: rgb(9, 132, 209);
 }
 .category_container{
-    position: relative;
-    margin-top: -5%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    place-items: center;
-}
-@media screen and (max-width:1215px){
-    .category{
-        height: 320px;
-        width: 310px;
-    }
-      .category_container{
 
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media screen and (max-width:630px){
-    .category{
-        height: 270px;
-        width: 240px;
-    }
-    .category_container{
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    }
-}
-@media screen and (min-width:1216px){
-    .category{
-        height: 380px;
-        width: 350px;
-    }
-      .category_container{
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-    }
+    position: relative;
+    margin-top: -10%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    max-width: 1600px;
+    place-items: center;
+       height: auto;
+
+    
 }
